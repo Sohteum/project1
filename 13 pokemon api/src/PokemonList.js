@@ -1,13 +1,11 @@
 import React from 'react';
 
-const PokemonList = ({pokemon}) => {
-  return (
-    <div>
-      {pokemon.map(p=> (
-        <div key={p}>{p}</div>
-      ))}
-    </div>
-  );
-};
+const PokemonList = ({pokemon}) => (
+  <div>
+    {pokemon.map(p => (
+      <div key={p}>{p}</div>
+    ))}
+  </div>
+);
 
 export default PokemonList;
