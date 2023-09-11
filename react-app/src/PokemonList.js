@@ -1,14 +1,24 @@
 import React from 'react';
 
-const PokemonList = ({pokemon}) => (
+const PokemonList = ({ pokemon }) => {
+
+  // const [pokemonData, setPokemonData] = useState()
 
 
+ 
 
-  <div>
-    {pokemon.map(p => (
-      <div   key={p}>{p}</div>
-    ))}
-  </div>
-);
+
+  return (
+    
+
+     <div>
+        {pokemon.map(p => (
+          <div   key={p}>{p}</div>
+        ))}
+     </div>
+
+  )
+
+};
 
 export default PokemonList;
