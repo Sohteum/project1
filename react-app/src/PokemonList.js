@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from "axios";
 
-const PokemonList = ({ pokemon }) => {
+const PokemonList = () => {
 
-  // const [pokemonData, setPokemonData] = useState()
+  const [pokemon, setPokemon] = useState([]);
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    let cancel
+    axios.get("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0").then(res => {
+      setLoading(false)
+      setPokemon(res.data.results.map(p => p.name))
+    })
+
+    return () => cancel()
+  }, [])
 
 
- 
-
+  if (loading) return "Loading..."
 
   return (
-    
-
-     <div>
-        {pokemon.map(p => (
-          <div   key={p}>{p}</div>
-        ))}
-     </div>
+    <div>
+    {pokemon.map(p => (
+      <div key={p}>{p}</div>
+    ))}
+  </div>
 
   )
 
