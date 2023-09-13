@@ -1,37 +1,51 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import PokemonThumb from './components/PokemonThumb'
+import PokemonDetails from './components/PokemonDetails'
 
-function App() {
 
-  const [pokemonData, setPokemonData] = useState([]);
-  const [pokemonUrl, setPokemonUrl] = useState([]);
+const App = () => {
 
-  useEffect(() => {
-    axios.get(`https://pokeapi.co/api/v2/pokemon`)
-      .then(res => {
-        setPokemonData(res.data.results.map(p => p.name))
-        setPokemonUrl(res.data.results.map(p => p.url))
+   const[allPokemons, setAllPokemons] = useState([])
+   const [loadMore, setLoadMore] = useState('https://pokeapi.co/api/v2/pokemon?limit=20')
+
+  const getAllPokemons = async () => {
+    const res = await fetch(loadMore)
+    const data = await res.json()
+
+    setLoadMore(data.next)
+
+    function createPokemonObject(results)  {
+      results.forEach( async pokemon => {
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)
+        const data =  await res.json()
+        setAllPokemons( currentList => [...currentList, data])
+        await allPokemons.sort((a, b) => a.id - b.id)
       })
-  }, [pokemonData])
-
-  const fnClick = () => {
-    console.log(pokemonData);
-    setPokemonData()
+    }
+    createPokemonObject(data.results)
   }
 
+ useEffect(() => {
+  getAllPokemons()
+ }, [])
 
   return (
-    <div>
-
-      <div onClick={fnClick}>{pokemonData}</div>
-      <div>{pokemonUrl}</div>
-
-
-      pokeApp
-
-
-
+    <div className="app-contaner">
+      <h1>Pokemon Evolution</h1>
+      <div className="pokemon-container">
+        <div className="all-container">
+          {allPokemons.map( (pokemonStats, index) => 
+            <PokemonThumb 
+              key={index}
+              image={pokemonStats.sprites.other.dream_world.front_default}
+              id={pokemonStats.id}
+              name={pokemonStats.name}
+              type={pokemonStats.types[0].type.name}
+            />)}
+          
+        </div>
+          <button className="load-more" onClick={() => getAllPokemons()}>Load more</button>
+      </div>
     </div>
   );
 }

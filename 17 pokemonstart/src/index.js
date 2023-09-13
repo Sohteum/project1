@@ -5,7 +5,8 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Character from './Character';
+import "./style.css" ;
+import PokemonDetails from './components/PokemonDetails';
 
 
 const router = createBrowserRouter([
@@ -14,9 +15,10 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: ":name",
-    element: <Character />,
+    path: ":detail",
+    element: <PokemonDetails  />,
   },
+
 ],
 );
 
