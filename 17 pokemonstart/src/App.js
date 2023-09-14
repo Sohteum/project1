@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import PokemonThumb from './components/PokemonThumb'
-import PokemonDetails from './components/PokemonDetails'
 
 
 const App = () => {
@@ -11,7 +10,7 @@ const App = () => {
   const getAllPokemons = async () => {
     const res = await fetch(loadMore)
     const data = await res.json()
-
+ 
     setLoadMore(data.next)
 
     function createPokemonObject(results)  {
@@ -29,13 +28,15 @@ const App = () => {
   getAllPokemons()
  }, [])
 
+
+
   return (
     <div className="app-contaner">
       <h1>Pokemon Evolution</h1>
       <div className="pokemon-container">
-        <div className="all-container">
+        <div className="all-container" allPokemons={allPokemons}>
           {allPokemons.map( (pokemonStats, index) => 
-            <PokemonThumb 
+            <PokemonThumb  
               key={index}
               image={pokemonStats.sprites.other.dream_world.front_default}
               id={pokemonStats.id}
